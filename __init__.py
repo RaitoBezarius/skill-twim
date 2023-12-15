@@ -91,7 +91,8 @@ async def user_has_pl(api, room_id, mxid, pl=100):
     """
     Determine if a user is admin in a given room.
     """
-    pls = await api.get_power_levels(room_id)
+    state_response = await api.room_get_state_event(room_id, "m.room.power_levels")
+    pls = state_response.content
     users = pls["users"]
     user_pl = users.get(mxid, 0)
     return user_pl == pl
